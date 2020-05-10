@@ -1,0 +1,3 @@
+May 3 - Initial project setup with basics of working DB and storing
+notifications
+May 10 - Cleanup displaying notifications in recyclerview

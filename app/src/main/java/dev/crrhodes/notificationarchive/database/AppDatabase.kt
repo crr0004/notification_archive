@@ -31,5 +31,9 @@ abstract class AppDatabase : RoomDatabase(){
             }
             return database!!
         }
+        fun closeDatabase(){
+            database?.close()
+            database = null
+        }
     }
 }

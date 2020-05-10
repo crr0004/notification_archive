@@ -9,9 +9,10 @@ class AdapterIdleResource : IdlingResource{
 
     // Do this for thread safety. Tests operate in another thread
     private val isIdle = AtomicBoolean(false);
+    private val name = UUID.randomUUID().toString()
 
     override fun getName(): String {
-        return "AdapterIdlingResource: " + UUID.randomUUID().toString()
+        return "AdapterIdlingResource: $name"
     }
 
     override fun isIdleNow(): Boolean {

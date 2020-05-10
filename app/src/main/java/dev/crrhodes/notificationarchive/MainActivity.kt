@@ -45,7 +45,6 @@ class MainActivity : AppCompatActivity(), ServiceConnection {
 
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
         this.notificationService = service as NotificationService.NotificationBinder
-//        viewModel = ViewModelProvider(this).get(NotificationsViewModel::class.java)
 
         this.lifecycleScope.launch {
             notificationService!!.getNotifications().collect {

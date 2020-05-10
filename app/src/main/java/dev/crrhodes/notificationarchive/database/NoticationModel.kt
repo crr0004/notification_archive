@@ -1,7 +1,9 @@
 package dev.crrhodes.notificationarchive.database
 
 import android.app.Notification
-import android.service.notification.StatusBarNotification
+import android.content.pm.ApplicationInfo
+import android.graphics.drawable.Icon
+import android.os.Build
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -16,11 +18,17 @@ data class NotificationModel (
     constructor(notification: Notification) : this() {
         val extras = notification.extras
         if(!extras.isEmpty){
-            val contentStringBuilder = JSONObject()
+            val contentsJsonObject = JSONObject()
             for(key: String in extras.keySet()){
-                contentStringBuilder.put(key, extras[key].toString())
+                if(key == "android.appInfo") {
+                    val appInfo = extras["android.appInfo"] as ApplicationInfo?
+                    contentsJsonObject.put("android.packageName", appInfo?.packageName)
+                }else {
+                    contentsJsonObject.put(key, extras[key].toString())
+                }
+
             }
-            contentString = contentStringBuilder.toString()
+            contentString = contentsJsonObject.toString()
         }
     }
 }
