@@ -1,13 +1,9 @@
 package dev.crrhodes.notificationarchive
 
-import android.app.Notification
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
-import android.util.JsonReader
-import android.util.JsonWriter
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import dev.crrhodes.notificationarchive.database.NotificationModel
 import kotlinx.android.synthetic.main.notification_list_item.view.*
@@ -15,11 +11,12 @@ import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONTokener
 
-class NotificationListAdapter(private var data: List<NotificationModel>) :
+class NotificationListAdapter(private var data: List<NotificationModel>, private val actionHolder: NotificationListActions) :
     RecyclerView.Adapter<NotificationListAdapter.NotificationListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.notification_list_item, parent, false)
+
         return NotificationListViewHolder(view)
     }
 
@@ -40,6 +37,24 @@ class NotificationListAdapter(private var data: List<NotificationModel>) :
         }catch(e: PackageManager.NameNotFoundException){
             holder.itemView.notificationAppIcon.setImageResource(R.drawable.ic_launcher_foreground)
         }
+        holder.itemView.moreVertNotificationItem.setOnClickListener {
+            val popupMenu = PopupMenu(it.context, it)
+            popupMenu.inflate(R.menu.notification_more_menu)
+            popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
+                when(menuItem.itemId){
+                    R.id.delete_notification -> {
+                        actionHolder.delete(item)
+                        true
+                    }
+                    R.id.snooze_notification -> {
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popupMenu.show()
+        }
+
     }
 
     fun setData(data: List<NotificationModel>) {
@@ -47,5 +62,8 @@ class NotificationListAdapter(private var data: List<NotificationModel>) :
         this.notifyDataSetChanged()
     }
 
+    interface NotificationListActions{
+        fun delete(notificationModel: NotificationModel)
+    }
     class NotificationListViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

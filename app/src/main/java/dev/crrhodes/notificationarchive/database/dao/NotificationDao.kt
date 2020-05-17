@@ -2,6 +2,7 @@ package dev.crrhodes.notificationarchive.database.dao
 
 import android.app.Notification
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import dev.crrhodes.notificationarchive.database.NotificationModel
@@ -14,5 +15,8 @@ interface NotificationDao {
 
     @Insert
     fun insert(notification: NotificationModel)
+
+    @Delete
+    suspend fun delete(notification: NotificationModel)
 
 }

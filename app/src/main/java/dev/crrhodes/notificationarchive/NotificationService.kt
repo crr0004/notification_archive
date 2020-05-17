@@ -46,7 +46,8 @@ class NotificationService : NotificationListenerService() {
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
-        if(sbn?.notification != null) {
+        // Don't store notifications that are tracking progress
+        if(sbn?.notification != null && !sbn.notification.extras.containsKey("android.progress")) {
             backgroundThread.submit {
                 db.notificationDao().insert(NotificationModel(sbn.notification))
             }

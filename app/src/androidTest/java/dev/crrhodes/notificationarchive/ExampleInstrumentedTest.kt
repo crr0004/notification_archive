@@ -11,9 +11,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -22,6 +25,7 @@ import dev.crrhodes.notificationarchive.database.AppDatabase
 import dev.crrhodes.notificationarchive.database.NotificationModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.Matchers.not
 import org.json.JSONObject
 import org.junit.*
 
@@ -42,6 +46,7 @@ class ExampleInstrumentedTest {
     @get:Rule
     var activityRule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
     val testNotification = JSONObject()
+    val adapterIdleResource = AdapterIdleResource("test idle")
 
     companion object {
         @BeforeClass
@@ -64,6 +69,16 @@ class ExampleInstrumentedTest {
                 NotificationModel(0, testNotification.toString())
             )
         }
+        IdlingRegistry.getInstance().register(adapterIdleResource)
+
+        activityRule.scenario.onActivity {
+            it.notificationList.adapter?.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver(){
+                override fun onChanged() {
+                    super.onChanged()
+                    adapterIdleResource.setIdleState(true)
+                }
+            })
+        }
     }
 
     @After
@@ -71,14 +86,8 @@ class ExampleInstrumentedTest {
         activityRule.scenario.onActivity {
             IdlingRegistry.getInstance().unregister(it.getIdlingResource())
         }
+        IdlingRegistry.getInstance().unregister(adapterIdleResource)
 
-    }
-
-    @Test
-    fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("dev.crrhodes.notificationarchive", appContext.packageName)
     }
 
     private fun createNotificationChannel(context: Context) {
@@ -100,19 +109,22 @@ class ExampleInstrumentedTest {
 
     @Test
     fun notificationIsShownInList(){
-        val adapterIdleResource = AdapterIdleResource()
-        IdlingRegistry.getInstance().register(adapterIdleResource)
-
-        activityRule.scenario.onActivity {
-            it.notificationList.adapter?.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver(){
-                override fun onChanged() {
-                    super.onChanged()
-                    adapterIdleResource.setIdleState(true)
-                }
-            })
-        }
         onView(withText(testNotification.getString("android.title"))).check(matches(isDisplayed()))
         onView(withText(testNotification.getString("android.text"))).check(matches(isDisplayed()))
-        IdlingRegistry.getInstance().unregister(adapterIdleResource)
+    }
+
+    @Test
+    fun notificationOptionsListShows(){
+        onView(withText("Delete")).check(doesNotExist())
+        onView(withId(R.id.moreVertNotificationItem)).perform(click())
+        onView(withText("Delete")).check(matches(isDisplayed()))
+        onView(withText("Snooze")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun canDeleteNotification(){
+        onView(withId(R.id.moreVertNotificationItem)).perform(click())
+        onView(withText("Delete")).perform(click())
+        onView(withText(testNotification.getString("android.title"))).check(doesNotExist())
     }
 }

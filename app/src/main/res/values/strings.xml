@@ -15,4 +15,6 @@
     <string name="home_second">Home Second</string>
     <string name="notification_service_name">Notification Service</string>
     <string name="notification_parse_error">Couldn\'t parse notification</string>
+    <string name="delete">Delete</string>
+    <string name="snooze">Snooze</string>
 </resources>
