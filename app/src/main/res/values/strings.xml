@@ -17,4 +17,5 @@
     <string name="notification_parse_error">Couldn\'t parse notification</string>
     <string name="delete">Delete</string>
     <string name="snooze">Snooze</string>
+    <string name="snooze_action" >dev.crrhodes.notificationarchive.SNOOZE_NOTIFICATION</string>
 </resources>

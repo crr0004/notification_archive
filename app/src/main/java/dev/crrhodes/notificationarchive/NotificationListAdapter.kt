@@ -47,6 +47,7 @@ class NotificationListAdapter(private var data: List<NotificationModel>, private
                         true
                     }
                     R.id.snooze_notification -> {
+                        actionHolder.snooze(item)
                         true
                     }
                     else -> false
@@ -64,6 +65,7 @@ class NotificationListAdapter(private var data: List<NotificationModel>, private
 
     interface NotificationListActions{
         fun delete(notificationModel: NotificationModel)
+        fun snooze(item: NotificationModel)
     }
     class NotificationListViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

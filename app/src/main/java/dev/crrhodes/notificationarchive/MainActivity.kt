@@ -1,5 +1,7 @@
 package dev.crrhodes.notificationarchive
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -69,5 +71,23 @@ class MainActivity : AppCompatActivity(), ServiceConnection, NotificationListAda
 
     override fun delete(notificationModel: NotificationModel) {
        model.delete(notificationModel)
+    }
+
+    override fun snooze(item: NotificationModel) {
+        val snoozeIntent = Intent(this, SnoozedNotificationsReciever::class.java).let {
+//            it.action = getString(R.string.snooze_action)
+            it.putExtra("id", item.id)
+            it.putExtra("content", item.contentString)
+            PendingIntent.getBroadcast(this, 0, it, 0)
+        }
+
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.set(
+            AlarmManager.RTC_WAKEUP,
+            System.currentTimeMillis() +  1*1000,
+            snoozeIntent
+        )
+
+
     }
 }
