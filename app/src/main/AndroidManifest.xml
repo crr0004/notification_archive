@@ -25,7 +25,7 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
                 </service>
-        <receiver android:name=".SnoozedNotificationsReciever" android:exported="false">
+        <receiver android:name=".SnoozedNotificationsReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="dev.crrhodes.notificationarchive.SNOOZE_NOTIFICATION" />
             </intent-filter>
