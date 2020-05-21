@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 1000 milliseconds in a second. 60 seconds in a minute -->
+    <integer name="snooze_time">3600000</integer>
+</resources>
