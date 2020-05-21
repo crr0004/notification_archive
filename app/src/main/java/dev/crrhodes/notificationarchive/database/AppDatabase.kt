@@ -8,7 +8,6 @@ import androidx.room.TypeConverters
 import dev.crrhodes.notificationarchive.database.dao.NotificationDao
 
 @Database(entities = arrayOf(NotificationModel::class), version = 1)
-@TypeConverters(dev.crrhodes.notificationarchive.database.TypeConverters::class)
 abstract class AppDatabase : RoomDatabase(){
     abstract fun notificationDao(): NotificationDao
     companion object {
@@ -16,6 +15,14 @@ abstract class AppDatabase : RoomDatabase(){
         var inMemory: Boolean = false
 
         fun getDatabase(context: Context) : AppDatabase{
+            /*
+             We need to take care if we are using a test database or the application version.
+             This is a singleton method so the database is only created if no connection already
+             exists.
+
+             When using the test database we don't want to fiddle with threads, so just allow
+             main thread queries as well.
+             */
             if(database == null){
                 database = if(inMemory){
                     Room.inMemoryDatabaseBuilder(

@@ -2,8 +2,6 @@ package dev.crrhodes.notificationarchive.database
 
 import android.app.Notification
 import android.content.pm.ApplicationInfo
-import android.graphics.drawable.Icon
-import android.os.Build
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
