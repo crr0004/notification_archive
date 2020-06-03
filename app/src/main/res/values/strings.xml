@@ -17,5 +17,23 @@
     <string name="notification_parse_error">Couldn\'t parse notification</string>
     <string name="delete">Delete</string>
     <string name="snooze">Snooze</string>
-    <string name="snooze_action" >dev.crrhodes.notificationarchive.SNOOZE_NOTIFICATION</string>
+    <string name="snooze_action">dev.crrhodes.notificationarchive.SNOOZE_NOTIFICATION</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="default_snooze">Default Snooze Time (minutes)</string>
+    <string name="permission_not_granted_message">This app requires access to notifications to store them as they are come in. Launch settings to grant permission?</string>
 </resources>

@@ -2,3 +2,10 @@ May 3 - Initial project setup with basics of working DB and storing
 notifications
 May 10 - Cleanup displaying notifications in recyclerview
 May 17 - Add ability to delete notifications from DB
+May 18 - Add basics of snoozing notifications
+May 19 - Finish creating a reciever to replay snooze notifications
+May 20 - Fix manifest for snooze broadcast reciever
+May 21 - Add documentation to main activity and move default snooze time to XML
+May 22 - Add documentation to AppDB
+May 23 - Add more documentation and fix animation for recyclerview
+Jun 3 - Add permission checking on app launch and settings for snooze time

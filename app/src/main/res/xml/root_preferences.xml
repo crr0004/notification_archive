@@ -1,0 +1,10 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <EditTextPreference
+        android:defaultValue="60"
+        app:key="snooze"
+        app:title="@string/default_snooze"
+        app:useSimpleSummaryProvider="true" />
+
+
+</PreferenceScreen>

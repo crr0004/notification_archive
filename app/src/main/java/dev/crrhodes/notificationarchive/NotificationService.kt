@@ -1,10 +1,14 @@
 package dev.crrhodes.notificationarchive
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import dev.crrhodes.notificationarchive.database.AppDatabase
 import dev.crrhodes.notificationarchive.database.NotificationModel
 import java.util.concurrent.ExecutorService
@@ -17,14 +21,12 @@ import java.util.concurrent.Executors
  */
 class NotificationService : NotificationListenerService() {
     private var listenerConnected: Boolean = false
-    private lateinit var db: AppDatabase
     private lateinit var backgroundThread: ExecutorService
 
     override fun onCreate() {
         super.onCreate()
         backgroundThread =  Executors.newSingleThreadExecutor();
 
-        db = AppDatabase.getDatabase(this)
 
     }
 
@@ -38,6 +40,7 @@ class NotificationService : NotificationListenerService() {
         We need to listen for intents from the system and intents from our activities wishing to bind
         against the service.
          */
+
         return if(intent?.action?.equals("android.service.notification.NotificationListenerService") == true){
             super.onBind(intent)
         }else {
@@ -59,7 +62,7 @@ class NotificationService : NotificationListenerService() {
         // Don't store notifications that are replayed
         if(sbn?.notification != null && !sbn.notification.extras.containsKey("replay")) {
             backgroundThread.submit {
-                db.notificationDao().insert(NotificationModel(sbn.notification))
+                AppDatabase.getDatabase(this).notificationDao().insert(NotificationModel(sbn.notification))
             }
         }
     }
@@ -67,7 +70,7 @@ class NotificationService : NotificationListenerService() {
     override fun onDestroy() {
         super.onDestroy()
         backgroundThread.shutdownNow()
-        db.close()
+        AppDatabase.getDatabase(this).close()
     }
 
     open class NotificationBinder(private val service: NotificationService) : Binder(){

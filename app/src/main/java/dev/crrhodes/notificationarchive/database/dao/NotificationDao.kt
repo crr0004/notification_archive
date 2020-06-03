@@ -1,10 +1,7 @@
 package dev.crrhodes.notificationarchive.database.dao
 
 import android.app.Notification
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import dev.crrhodes.notificationarchive.database.NotificationModel
 import kotlinx.coroutines.flow.Flow
 
@@ -13,7 +10,7 @@ interface NotificationDao {
     @Query("SELECT * FROM notifications")
     fun getAll(): Flow<List<NotificationModel>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(notification: NotificationModel)
 
     @Delete
