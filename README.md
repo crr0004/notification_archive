@@ -1,7 +1,6 @@
 # Author
 Christopher Rhodes
-SID 210499643
-https://bitbucket-students.deakin.edu.au/users/crrhodes/repos/sit305-notificationarchive/browse
+
 
 # About
 The following product proposal aim is to address the problem of being unable to
